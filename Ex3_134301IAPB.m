@@ -1,6 +1,18 @@
 clear;
 load('D.mat');
 
-model1=fitlm(D);
+pairwise_dist = pdist(D,'euclidean');
+sq_form = squareform(pairwise_dist);
 
-anova(model1);
+linkage = linkage(pairwise_dist);
+
+c = cophenet(linkage,pairwise_dist);
+
+I = inconsistent(linkage);
+
+clusters = cluster(linkage,'cutoff', 0.95);
+
+dendrogram(linkage);
+
+figure;
+scatter3(D(:,1),D(:,2),clusters);
